@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎂 عيد ميلاد سعيد!</title>
+  <meta name="description" content="احتفال عيد ميلاد خاص!" />
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Particle canvas (stars / confetti+fireworks) -->
+  <canvas id="fx-canvas"></canvas>
+
+  <!-- Custom cursor (desktop) -->
+  <div id="cursor" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Toast notification -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- =================== SELECTION SCREEN =================== -->
+  <section id="selection-screen" class="screen active">
+
+    <div class="sel-content">
+      <div class="cake-icon" aria-hidden="true">🎂</div>
+
+      <!-- Alternating "Happy Birthday" / "عيد ميلاد سعيد" -->
+      <div class="hb-wrap" aria-live="polite">
+        <span class="hb-text active" id="hb-en">Happy Birthday!</span>
+        <span class="hb-text"        id="hb-ar">عيد ميلاد سعيد!</span>
+      </div>
+
+      <p class="sel-sub">من صاحب اليوم الخاص؟ 🎉</p>
+
+      <div class="btn-row">
+        <button class="friend-btn btn-sman" onclick="showCelebration('sman')" id="btn-sman">
+          <span class="btn-bg"></span>
+          <span class="btn-emoji">🎈</span>
+          <span class="btn-name">sman man</span>
+        </button>
+        <button class="friend-btn btn-bruh" onclick="showCelebration('bruh')" id="btn-bruh">
+          <span class="btn-bg"></span>
+          <span class="btn-emoji">🎉</span>
+          <span class="btn-name">bruh man</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ambient floating emojis -->
+    <div class="bg-floats" aria-hidden="true">
+      <span>🎊</span><span>⭐</span><span>🎁</span><span>✨</span>
+      <span>🎀</span><span>🌟</span><span>🎈</span><span>💫</span>
+      <span>🎂</span><span>🥳</span><span>🎉</span><span>💝</span>
+    </div>
+  </section>
+
+  <!-- =================== CELEBRATION SCREEN =================== -->
+  <section id="celebration-screen" class="screen">
+
+    <header class="celeb-header">
+      <button class="back-btn" onclick="goBack()">رجوع ←</button>
+    </header>
+
+    <!-- Live floating emojis injected by JS -->
+    <div id="floating-emojis" class="floating-emojis" aria-hidden="true"></div>
+
+    <!-- ─────── SMAN MAN ─────── -->
+    <div id="cel-sman" class="cel-content">
+      <div class="hero">
+        <div class="avatar-ring ring-sman">
+          <!--
+            ╔══════════════════════════════════════════════════╗
+            ║  لإضافة الصورة الرئيسية، استبدل ما بالأسفل بـ:   ║
+            ║  <img src="photos/sman_main.jpg" alt="sman man"> ║
+            ╚══════════════════════════════════════════════════╝
+          -->
+            <img src="photos/sman1.jpeg" alt="">
+          <!-- <div class="avatar-emoji">🥳</div> -->
+        </div>
+
+        <h1 class="friend-name" id="tw-sman"><!-- الاسم يظهر بالكتابة --></h1>
+        <p class="friend-msg">نتمنى لك أجمل يوم ميلاد على الإطلاق! 🎂</p>
+        <div class="sparkle-bar" aria-hidden="true">✨ 🎉 🎈 🎂 🎁 🎊 ✨</div>
+        <button class="share-btn" onclick="sharePage('sman man')">🔗 شارك الاحتفال</button>
+      </div>
+
+      <!-- ─── معرض الصور ─── -->
+      <section class="gallery-wrap">
+        <h2 class="gallery-heading">📸 ذكريات</h2>
+
+        <!--
+          ╔══════════════════════════════════════════════════════════════╗
+          ║  كيفية إضافة الصور:                                          ║
+          ║  1. أنشئ مجلد اسمه "photos" بجانب index.html                 ║
+          ║  2. ضع فيه صورك (sman1.jpg, sman2.jpg …)                    ║
+          ║  3. استبدل كل بلوك photo-card أدناه بالكود التالي:           ║
+          ║                                                              ║
+          ║  <div class="photo-card"                                     ║
+          ║       data-caption="اكتب تعليقك بالعربية هنا">              ║
+          ║    <img src="photos/sman1.jpg" alt="sman man"                ║
+          ║         loading="lazy">                                      ║
+          ║    <div class="photo-caption">                               ║
+          ║      اكتب تعليقك بالعربية هنا                               ║
+          ║    </div>                                                    ║
+          ║  </div>                                                      ║
+          ╚══════════════════════════════════════════════════════════════╝
+        -->
+        <div class="photo-grid" id="grid-sman">
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/sman1.jpeg" alt=""><div class="photo-caption">عاش يا سمااان</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/sman2.jpeg" alt=""><div class="photo-caption">عوووووووو👻</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/sman3.jpeg" alt=""><div class="photo-caption">الاكل غريزة بردو</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/sman4.jpeg" alt=""><div class="photo-caption">ايه ده يا سمان ؟</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/sman5.jpeg" alt=""><div class="photo-caption">احلي جبهة يا عم</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/sman6.jpeg" alt=""><div class="photo-caption">؟؟؟؟؟؟؟؟؟؟؟</div></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ─────── BRUH MAN ─────── -->
+    <div id="cel-bruh" class="cel-content">
+      <div class="hero">
+        <div class="avatar-ring ring-bruh">
+          <!--
+            ╔══════════════════════════════════════════════════╗
+            ║  <img src="photos/bruh_main.jpg" alt="bruh man"> ║
+            ╚══════════════════════════════════════════════════╝
+          -->
+          <!-- <div class="avatar-emoji">🎉</div> -->
+           <img src="/photos/bruh5.jpeg" alt="">
+        </div>
+
+        <h1 class="friend-name" id="tw-bruh"><!-- الاسم يظهر بالكتابة --></h1>
+        <p class="friend-msg">تستحق أفضل يوم على الإطلاق! عيد ميلاد سعيد! 🎊</p>
+        <div class="sparkle-bar" aria-hidden="true">✨ 🎁 🎂 🎉 🎈 🥳 ✨</div>
+        <button class="share-btn" onclick="sharePage('bruh man')">🔗 شارك الاحتفال</button>
+      </div>
+
+      <section class="gallery-wrap">
+        <h2 class="gallery-heading">📸 ذكريات</h2>
+
+        <!--
+          ╔══════════════════════════════════════════════════════════════╗
+          ║  استبدل كل بلوك photo-card بـ:                               ║
+          ║  <div class="photo-card"                                     ║
+          ║       data-caption="اكتب تعليقك بالعربية هنا">              ║
+          ║    <img src="photos/bruh1.jpg" alt="bruh man"                ║
+          ║         loading="lazy">                                      ║
+          ║    <div class="photo-caption">                               ║
+          ║      اكتب تعليقك بالعربية هنا                               ║
+          ║    </div>                                                    ║
+          ║  </div>                                                      ║
+          ╚══════════════════════════════════════════════════════════════╝
+        -->
+        <div class="photo-grid" id="grid-bruh">
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/bruh1.jpeg" alt=""><div class="photo-caption">اععععييييه , مش عارف اتخليها غير كده</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/bruh2.jpeg" alt=""><div class="photo-caption">انا قولت الاكل غريزة بردو</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/bruh3.jpeg" alt=""><div class="photo-caption">🍋</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/bruh4.jpeg" alt=""><div class="photo-caption">جبهتك طلعت اكبر ,الصورة مش كاملة خلي بالك</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/bruh5.jpeg" alt=""><div class="photo-caption">اهلا يا ملك الوسامة</div></div>
+          <div class="photo-card photo-ph" data-caption=""><img src="/photos/bruh6.jpeg" alt=""><div class="photo-caption">طول عمرك ديلر</div></div>
+        </div>
+      </section>
+    </div>
+
+  </section>
+
+  <!-- ======================== LIGHTBOX ======================== -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="عارض الصور">
+    <button class="lb-close" onclick="closeLightbox()" aria-label="إغلاق">✕</button>
+    <!-- arrows positioned absolute, not affected by RTL -->
+    <button class="lb-arrow lb-prev" onclick="lbNav(-1)" aria-label="السابق">&#8250;</button>
+    <button class="lb-arrow lb-next" onclick="lbNav(1)"  aria-label="التالي">&#8249;</button>
+    <div class="lb-inner">
+      <img id="lb-img" src="" alt="" />
+      <p id="lb-caption" class="lb-caption"></p>
+    </div>
+    <div class="lb-counter" id="lb-counter"></div>
+    <div class="lb-dots" id="lb-dots"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
